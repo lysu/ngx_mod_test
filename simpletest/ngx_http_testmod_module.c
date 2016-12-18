@@ -66,8 +66,8 @@ static ngx_int_t ngx_http_testmod_handler(ngx_http_request_t *r) {
     r->headers_out.status = NGX_HTTP_OK;
     r->headers_out.content_length_n = response.len;
     r->headers_out.content_type = type;
-    rc = ngx_http_send_header(r);
 
+    rc = ngx_http_send_header(r);
     if (rc == NGX_ERROR || rc > NGX_OK || r->header_only) {
         return rc;
     }
@@ -76,6 +76,7 @@ static ngx_int_t ngx_http_testmod_handler(ngx_http_request_t *r) {
     if (b == NULL) {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
+    ngx_memcpy(b->pos, response.data, response.len);
     b->last = b->pos + response.len;
     b->last_buf = 1;
 
